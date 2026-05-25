@@ -11,13 +11,13 @@ public:
 
         ProductSum = 1;
         for(int i = n-1;i>=0;i--){
-            sufProductSum[i] = ProductSum;
+            preProductSum[i] *= ProductSum;
             ProductSum *= nums[i];
         }
-        vector<int> ans(n);
-        for(int i = 0; i< n;i++){
-            ans[i] = preProductSum[i] * sufProductSum[i];
-        }
-        return ans;
+        // vector<int> ans(n);
+        // for(int i = 0; i< n;i++){
+        //     ans[i] = preProductSum[i] * sufProductSum[i];
+        // }
+        return preProductSum;
     }
 };
