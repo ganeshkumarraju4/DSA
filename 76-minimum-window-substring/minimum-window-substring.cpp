@@ -1,37 +1,32 @@
 class Solution {
 public:
-    bool Check(unordered_map<char,int> &freq,unordered_map<char,int> &target){
-        for(auto it:target){
-            if(it.second > freq[it.first])return false;
-        }
-        return true;
-    }
-    
     string minWindow(string s, string t) {
-        string minStr = "",windowStr="";
-
-        unordered_map<char,int> freq,target;
+        int required = 0,formed = 0;
+        int start = 0;
+        unordered_map<char,int> target,window;
+        for(auto it: t){
+            target[it]++;
+        }
+        int minLen = 1e9;
+      
+        required = target.size();
         int left = 0;
-
-        for(int i =0;i<t.size();i++)
-        target[t[i]]++;
-
-        for(int right=0;right<s.size();right++){
-            freq[s[right]]++;
-            windowStr += s[right];
-        
-            while(freq.size() >= target.size() && Check(freq,target)){
-                int k = minStr.size();
-                if(k==0 || windowStr.size() < k){
-                    minStr = windowStr;
+        for(int i = 0;i < s.size();i++){
+            window[s[i]]++;
+            if(target.count(s[i]) && window[s[i]] == target[s[i]]){
+                formed++;
+            }
+            while(formed == required){
+                if(i-left+1 < minLen){
+                    minLen = i-left+1;
+                    start = left;
                 }
-                freq[s[left]]--;
-                if(freq[s[left]]==0)freq.erase(s[left]);
-                windowStr.erase(0,1);
+                window[s[left]]--;
+                if(target.count(s[left]) && window[s[left]] < target[s[left]])formed--;
                 left++;
             }
-
         }
-        return minStr;
+        if(minLen == 1e9)return "";
+        else return s.substr(start,minLen);
     }
 };
