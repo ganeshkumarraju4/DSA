@@ -1,36 +1,31 @@
 class Solution {
 public:
-    vector<bool> pathExistenceQueries(int n, vector<int>& nums, int maxDiff, vector<vector<int>>& queries) {
+    vector<bool> pathExistenceQueries(
+        int n,
+        vector<int>& nums,
+        int maxDiff,
+        vector<vector<int>>& queries
+    ) {
+        vector<int> component(n);
+        int comp = 0;
+
+        for (int i = 1; i < n; i++) {
+            if (nums[i] - nums[i - 1] > maxDiff) {
+                comp++;
+            }
+
+            component[i] = comp;
+        }
+
         vector<bool> ans;
-        unordered_map<int,int> connection;
-        vector<vector<int>> adj(n);
-        for(int i =0;i<n;i++){
-            int j = upper_bound(nums.begin()+i, nums.end(),  nums[i] + maxDiff)- nums.begin() - 1;
-            
-            if(j <= i)continue;
-            else connection[i] = j;
+
+        for (auto& q : queries) {
+            int u = q[0];
+            int v = q[1];
+
+            ans.push_back(component[u] == component[v]);
         }
-        for(auto it: queries){
-            int u = min(it[0],it[1]);
-            int v = max(it[0],it[1]);
-            if(u==v){
-                ans.push_back(true);
-                continue;
-            }
-            while(u < v){
-                if(connection.count(u)){
-                    if(connection[u] >= v){
-                        ans.push_back(true);
-                        break;
-                    }
-                    else u = connection[u];
-                }
-                else {
-                    ans.push_back(false);
-                    break;}
-                
-            }
-        }
-    return ans;
+
+        return ans;
     }
 };
