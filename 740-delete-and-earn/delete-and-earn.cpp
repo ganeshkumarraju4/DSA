@@ -6,14 +6,16 @@ public:
         for (int num : nums)
             points[num] += num;
 
-        vector<int> dp(mx + 3, 0);
-
+        int prev1 = 0;
+        int prev2 = 0;
+        int curr = 0;
         for (int value = mx; value >= 1; value--) {
-            int take = points[value] + dp[value + 2];
-            int skip = dp[value + 1];
-            dp[value] = max(take, skip);
+            curr = max(points[value]+prev2,prev1);
+
+            prev2 = prev1;
+            prev1 = curr;
         }
 
-        return dp[1];
+        return curr;
     }   
 };
