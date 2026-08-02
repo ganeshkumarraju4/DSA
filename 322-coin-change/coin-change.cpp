@@ -1,27 +1,16 @@
 class Solution {
 public:
-    long long Count(vector<long long>& dp,long long target,int amount,vector<int>& coins){
-        if(target == amount)return 0;
+    int coinChange(vector<int>& coins, int amount) {
+        vector<int> dp(amount+1,INT_MAX);
+        dp[0] = 0;
 
-        if(dp[target]!=-1)return dp[target];
-        long long ans = LLONG_MAX;
-        
-        for(auto coin:coins){
-            if(target+coin <= amount){
-              long long  temp = Count(dp,target+coin,amount,coins);
-            if(temp!=LLONG_MAX){
-                ans = min(ans,1+temp);
+        for(int i = 1;i<=amount;i++){
+            for(int coin:coins){
+                if(i-coin>=0 && dp[i-coin]!=INT_MAX){
+                    dp[i] = min(dp[i],dp[i-coin]+1);
+                }
             }
         }
-        }
-        return dp[target] = ans;
-    }
-    int coinChange(vector<int>& coins, int amount) {
-       
-        vector<long long>dp(amount+1,-1);
-        
-       long long output = Count(dp,0,amount,coins);
-       if(output==LLONG_MAX)return -1;
-       else return output;
+        return dp[amount] == INT_MAX ? -1 : dp[amount];
     }
 };
