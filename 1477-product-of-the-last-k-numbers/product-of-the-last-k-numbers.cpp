@@ -3,20 +3,24 @@ public:
     vector<int> arr;
     //vector<int> product;
     ProductOfNumbers() {
-        
+        arr.push_back(1);
     }
     
     void add(int num) {
-        arr.push_back(num);
+        if(num == 0){
+            arr.clear();
+            arr.push_back(1);
+        }
+        else
+        arr.push_back(num*arr.back());
     }
     
     int getProduct(int k) {
-        int product =  1;
-        int i = arr.size()-1;
-       for(int j = k;j>0;j--){
-        product *= arr[i--];
-       }
-       return product;
+        int n = arr.size();
+        if(k>=n) return 0;
+
+
+       return arr.back()/arr[n-1-k];
     }
 };
 
